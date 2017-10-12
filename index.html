@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Sardinas et patterson</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.13/semantic.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha/katex.min.css" integrity="sha384-FkMHIpkXHDi3o2XSOOa5/9TpXg4AX4DXPSC6z28hi2Eqn/27ea8MTV18rTq9OyQR" crossorigin="anonymous">
+    <link rel="stylesheet" href="main.css">
+  </head>
+  <body>
+    <div id="form">
+      <div class="ui massive  action input">
+        <input id="code" type="text" placeholder="a bb abba babab">
+        <button id="button" class="ui teal right labeled icon button">
+          <i class="check icon"></i>GO
+        </button>
+      </div>
+    </div>
+    <section id="results">
+      <div class="ui icon success message">
+        <i class="file text icon"></i>
+        <div class="content">
+          <div class="header">
+            Code déchifrabble
+          </div>
+          <p>Tout texte de mots de C peut se décoder de manière unique.</p>
+        </div>
+      </div>
+      <div id="alphabet"></div>
+      <div id="lcode"></div>
+      <div id="steps">
+
+      </div>
+    </section>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha/katex.min.js" integrity="sha384-wt0V9VomB0kx/jgLEkR18Slo+aNALuRwOOrWkicjQ0HHpFqu0JKzaFkbtmsku5a/" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
