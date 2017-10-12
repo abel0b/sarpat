@@ -1,6 +1,4 @@
-function union(a, b) {
-  return new Set([...a, ...b]);
-}
+init_messages();
 
 document.getElementById('button').addEventListener("click", function (event) {
   let code = new Set(document.getElementById('code').value.split(' '));
@@ -10,50 +8,52 @@ document.getElementById('button').addEventListener("click", function (event) {
   let alphabet = getAlphabet(code);
   let m = alphabet.size;
   let n = code.size;
-  let alphabet_string = "A=\\{";
-  i=0;
-  for (let letter of alphabet) {
-    if (i < m-1) {
-      alphabet_string += letter + ","
-    }
-    else {
-      alphabet_string += letter + '\\}'
-    }
-    i++;
-  }
+  let alphabet_string = "A=" + setToString(alphabet);
   katex.default.render(alphabet_string, document.getElementById("alphabet"));
-  let code_string = "C=\\{";
-  i = 0;
-  for (let word of code) {
-    if (i < n-1) {
-      code_string += word + ","
+  let code_string = "C=" + setToString(code);
+  katex.default.render(code_string, document.getElementById("lcode"));
+  isUniquelyDecodable(code);
+});
+
+function setToString(set) {
+  if (set.size == 0) {
+    return "\\varnothing";
+  }
+  i=0;
+  let string = "\\{";
+  for (let el of set) {
+    if (i < set.size-1) {
+      string += el + ","
     }
     else {
-      code_string += word + '\\}'
+      string += el + '\\}'
     }
     i++;
   }
-  katex.default.render(code_string, document.getElementById("lcode"));
-  console.log(code);
-  console.log(pref(code, code));
-});
+  return string;
+}
 
 function isUniquelyDecodable(code)
 {
-  return SPaux(1, code, code)
+  init_messages();
+  return SP([code], code)
 }
 
 function pref(l1, l2) {
   l = new Set([]);
-  for (let w1 in l1) {
-    for (let w2 in l2) {
+  if (are_equals(l1, l)) {
+    return new Set([...l2]);
+  }
+  if (are_equals(l2, l)) {
+    return l;
+  }
+  for (let w1 of l1) {
+    for (let w2 of l2) {
       if (w2.length >= w1.length) {
         if (w2.substr(0, w1.length) == w1) {
-          if (w1.length == w2.length) {
-            let w = "";
-          }
-          else {
-            let w = w2.substr(w1.length, w2.length-w1.length);
+          let w = "";
+          if (w1.length < w2.length) {
+            w = w2.substr(w1.length, w2.length-w1.length);
           }
           if (!l.has(w)) {
             l.add(w);
@@ -65,30 +65,58 @@ function pref(l1, l2) {
   return l;
 }
 
-function SPaux(round, prev, code) {
+function SP(sets, code) {
+  round = sets.length;
+  prev = sets[round-1];
   if (round == 1) {
     next = pref(prev, prev);
-    console.log(next);
+    next.delete("");
   }
   else {
     next = union(pref(code, prev), pref(prev, code));
   }
+  print_round(round, next);
 
-  if (contain_an_element_of(code, next)) {
-    alert(round + "decodable");
-    return true
-  }
-  else if (next.has("")){
-    alert(round + "ambigu");
+  if (contain_an_element_of(code, next) || next.has("")) {
+    display_block("error");
     return false;
   }
+  else if (sets.includes(next)) {
+    display_block("success");
+    return true;
+  }
   else {
-    return SPaux(round+1, next, code);
+    sets.push(next);
+    return SP(sets, code);
   }
 }
 
+function union(a, b) {
+  return new Set([...a, ...b]);
+}
+
+function are_equals(a, b) {
+  if (a.size != a.size) {
+    return false;
+  }
+  for (let el of a) {
+    if (!b.has(el)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+function print_round(round, set) {
+  let r = document.createElement("div");
+  r.id = "round-" + round;
+  document.getElementById("rounds").appendChild(r);
+  let txt = "\\textbf{round\\ " + round + "}\\ S_\{" + round + "\}=" + setToString(set);
+  katex.default.render(txt, document.getElementById("round-" + round));
+}
+
 function contain_an_element_of(a, b) {
-  for (let el in a) {
+  for (let el of a) {
     if (b.has(el)) {
       return true;
     }
@@ -106,4 +134,21 @@ function getAlphabet(code)
     }
   }
   return alphabet;
+}
+
+function hide_block(id)
+{
+  document.getElementById(id).style.display = "none";
+}
+
+function display_block(id)
+{
+  document.getElementById(id).style.display = "inline-flex";
+}
+
+function init_messages()
+{
+  hide_block("success");
+  hide_block("error");
+  document.getElementById("rounds").innerHTML = "";
 }

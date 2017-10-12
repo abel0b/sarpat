@@ -9,6 +9,7 @@
   </head>
   <body>
     <div id="form">
+      <h1><a href="https://en.wikipedia.org/wiki/Sardinas%E2%80%93Patterson_algorithm">Algorithme de Sardinas et Patterson</a></h1>
       <div class="ui massive  action input">
         <input id="code" type="text" placeholder="a bb abba babab">
         <button id="button" class="ui teal right labeled icon button">
@@ -17,20 +18,27 @@
       </div>
     </div>
     <section id="results">
-      <div class="ui icon success message">
+      <div id="success" class="ui icon success message">
         <i class="file text icon"></i>
         <div class="content">
           <div class="header">
             Code déchifrabble
           </div>
-          <p>Tout texte de mots de C peut se décoder de manière unique.</p>
+          <p></p>
+        </div>
+      </div>
+      <div id="error" class="ui icon error message">
+        <i class="file icon"></i>
+        <div class="content">
+          <div class="header">
+            Code ambigu
+          </div>
+          <p></p>
         </div>
       </div>
       <div id="alphabet"></div>
       <div id="lcode"></div>
-      <div id="steps">
-
-      </div>
+      <div id="rounds"></div>
     </section>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-alpha/katex.min.js" integrity="sha384-wt0V9VomB0kx/jgLEkR18Slo+aNALuRwOOrWkicjQ0HHpFqu0JKzaFkbtmsku5a/" crossorigin="anonymous"></script>
     <script src="main.js"></script>
